@@ -1,0 +1,25 @@
+{
+  "name": "URL Toggle",
+  "version": "1.0",
+  "description": "Toggle between sites that share URL pieces.",
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "options_page": "index.html",
+  "page_action": {
+    "default_icon": "swap.png",
+    "default_title": "Toggle!"
+  },
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage"
+  ],
+  "icons": {
+    "512": "swap.png"
+  },
+  "manifest_version": 2
+}
