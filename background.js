@@ -31,7 +31,7 @@ function syncRules() {
 }
 
 chrome.runtime.onInstalled.addListener(function() {
-  setDefaultRules();
+  setDefaultRules(); // TODO: keep current rules and allow for rule CRUD
 });
 
 chrome.pageAction.onClicked.addListener(function (tab) {

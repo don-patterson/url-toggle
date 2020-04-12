@@ -1,7 +1,7 @@
 {
   "name": "URL Toggle",
   "version": "0.1",
-  "description": "Toggle between sites that share URL pieces.",
+  "description": "[work in progress] Toggle between sites that share URL pieces.",
   "background": {
     "scripts": [
       "background.js"
