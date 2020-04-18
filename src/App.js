@@ -1,4 +1,3 @@
-/* global chrome */
 import React, {Fragment, useEffect, useState} from "react";
 import {
   Button,
@@ -8,28 +7,14 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import {makeStyles} from "@material-ui/styles";
-import {withTheme} from "./theme";
+import {makeStyles} from "@material-ui/core/styles";
+import {loadRules, saveRules} from "./chrome";
 
 // Constants/Utils:
 const PATTERN = "Pattern";
 const REPLACEMENT = "Replacement";
 const partial = (f, ...args) => f.bind(null, ...args);
 const isValidRule = (rule) => rule.every((input) => input.length > 0);
-const urlMatcher = ([pattern]) =>
-  new chrome.declarativeContent.PageStateMatcher({
-    pageUrl: {urlMatches: pattern},
-  });
-const syncChromeRules = (rules) => {
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        conditions: rules.map(urlMatcher),
-        actions: [new chrome.declarativeContent.ShowPageAction()],
-      },
-    ]);
-  });
-};
 
 // Components
 const Input = ({label, text, onChange}) => (
@@ -68,9 +53,7 @@ const App = () => {
   const [rules, setRules] = useState([]);
 
   useEffect(() => {
-    chrome.storage.sync.get(["rules"], ({rules = []}) => {
-      setRules(rules);
-    });
+    loadRules().then(setRules);
   }, []);
 
   const handleRuleInput = (index, label, value) => {
@@ -87,10 +70,8 @@ const App = () => {
 
   const handleSave = () => {
     const validRules = rules.filter(isValidRule);
-    chrome.storage.sync.set({rules: validRules}, () => {
-      syncChromeRules(validRules);
-      setRules(validRules);
-    });
+    saveRules(validRules);
+    setRules(validRules);
   };
 
   return (
@@ -124,4 +105,4 @@ const App = () => {
   );
 };
 
-export default withTheme(App);
+export default App;
