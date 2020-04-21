@@ -1,44 +1,11 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {
-  Button,
-  Container,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import React, {useEffect, useState} from "react";
+import {Button, Container, Grid, Paper, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {loadRules, saveRules} from "./chrome";
+import {loadRules, saveRules, randomId} from "./chrome";
+import Rule from "./Rule";
 
-// Constants/Utils:
-const PATTERN = "Pattern";
-const REPLACEMENT = "Replacement";
+const isValidRule = (rule) => rule.from !== "" && rule.to !== "";
 const partial = (f, ...args) => f.bind(null, ...args);
-const isValidRule = (rule) => rule.every((input) => input.length > 0);
-
-// Components
-const Input = ({label, text, onChange}) => (
-  <TextField
-    fullWidth
-    size="small"
-    variant="outlined"
-    label={label}
-    defaultValue={text}
-    onChange={(event) => onChange(label, event.target.value)}
-  />
-);
-
-const Rule = ({pattern, replacement, onInputChange}) => (
-  <Fragment>
-    <Grid item xs={6}>
-      <Input label={PATTERN} text={pattern} onChange={onInputChange} />
-    </Grid>
-    <Grid item xs={6}>
-      <Input label={REPLACEMENT} text={replacement} onChange={onInputChange} />
-    </Grid>
-  </Fragment>
-);
-
 const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(3),
@@ -56,37 +23,38 @@ const App = () => {
     loadRules().then(setRules);
   }, []);
 
-  const handleRuleInput = (index, label, value) => {
-    const newRules = [...rules];
-    const newRule = [...rules[index]];
-    newRule[label === PATTERN ? 0 : 1] = value;
-    newRules[index] = newRule;
-    setRules(newRules);
-  };
-
-  const handleAddRow = () => {
-    setRules([...rules, ["", ""]]);
-  };
-
   const handleSave = () => {
     const validRules = rules.filter(isValidRule);
     saveRules(validRules);
     setRules(validRules);
   };
 
+  const handleRuleChange = (index, rule) => {
+    // the index is just for optimization...not sure if it's necessary
+    // since we could look up the rule by id, but that seems like a lot
+    // of work to do every keystroke. keeping a variable-sized list
+    // in state must have been solved (or avoided) before!
+    const newRules = [...rules];
+    newRules[index] = rule;
+    setRules(newRules);
+  };
+
+  const handleAddRow = () => {
+    setRules([...rules, {id: randomId(), from: "", to: ""}]);
+  };
+
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <Paper className={classes.paper}>
         <Typography variant="h6" className={classes.title}>
           URL Toggle Rules
         </Typography>
         <Grid container spacing={2}>
-          {rules.map(([pattern, replacement], index) => (
+          {rules.map((rule, index) => (
             <Rule
-              key={index}
-              pattern={pattern}
-              replacement={replacement}
-              onInputChange={partial(handleRuleInput, index)}
+              key={rule.id}
+              rule={rule}
+              onChange={partial(handleRuleChange, index)}
             />
           ))}
           <Grid item xs={6} container justify="flex-end">

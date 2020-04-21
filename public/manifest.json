@@ -1,6 +1,6 @@
 {
   "name": "URL Toggle",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Toggle between sites that share URL pieces.",
   "background": {
     "scripts": [
@@ -14,9 +14,8 @@
     "default_title": "Toggle!"
   },
   "permissions": [
-    "activeTab",
-    "declarativeContent",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "icons": {
     "512": "swap.png"
