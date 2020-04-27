@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Container, Grid, Paper, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {loadRules, saveRules, randomId} from "./chrome";
+import {loadFromStorage, saveToStorage, randomId} from "./chrome";
 import Rule from "./Rule";
 
 const isValidRule = (rule) => rule.from !== "" && rule.to !== "";
@@ -20,12 +20,16 @@ const App = () => {
   const [rules, setRules] = useState([]);
 
   useEffect(() => {
-    loadRules().then(setRules);
+    const initRules = async () => {
+      const {rules} = await loadFromStorage();
+      setRules(rules);
+    };
+    initRules();
   }, []);
 
   const handleSave = () => {
     const validRules = rules.filter(isValidRule);
-    saveRules(validRules);
+    saveToStorage({rules: validRules});
     setRules(validRules);
   };
 
