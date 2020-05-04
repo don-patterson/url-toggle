@@ -1,15 +1,10 @@
 /* global chrome */
-import {
-  applyRule,
-  findMatch,
-  loadFromStorage,
-  syncUrlListener,
-  migrateRules,
-} from "./chrome";
+import {loadFromStorage, syncUrlListener, migrateRules} from "./chrome";
+import {findRule, applyRule} from "./util";
 
 chrome.pageAction.onClicked.addListener(async (tab) => {
   const {rules} = await loadFromStorage();
-  const matchingRule = findMatch(rules, tab.url);
+  const matchingRule = findRule(rules, tab.url);
   if (matchingRule === undefined) {
     return;
   }

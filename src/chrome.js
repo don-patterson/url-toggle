@@ -1,5 +1,7 @@
 /* global chrome */
 
+import {randomString} from "./util";
+
 const VERSION = "1.2";
 
 const loadFromStorage = () =>
@@ -15,13 +17,6 @@ const saveToStorage = (data) =>
       resolve();
     });
   });
-
-const applyRule = (rule, url) => url.replace(new RegExp(rule.from), rule.to);
-
-const findMatch = (rules, url) =>
-  rules.find((rule) => new RegExp(rule.from).test(url));
-
-const randomId = () => Math.random().toString(36).substring(2);
 
 const _urlMatcher = (rule) =>
   new chrome.declarativeContent.PageStateMatcher({
@@ -53,7 +48,7 @@ const migrateRules = async () => {
     // v1 rules were [pattern, replacement] pairs
     migrated.rules = rules.map(([pattern, replacement]) => {
       return {
-        id: randomId(),
+        id: randomString(),
         from: pattern,
         to: replacement,
       };
@@ -63,12 +58,4 @@ const migrateRules = async () => {
   saveToStorage(migrated);
 };
 
-export {
-  applyRule,
-  findMatch,
-  loadFromStorage,
-  migrateRules,
-  randomId,
-  saveToStorage,
-  syncUrlListener,
-};
+export {loadFromStorage, migrateRules, saveToStorage, syncUrlListener, VERSION};

@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {Grid, TextField} from "@material-ui/core";
 
-const Rule = ({rule, onChange}) => {
+const RuleInput = ({rule, onChange}) => {
   const handleChangeFrom = (e) => onChange({...rule, from: e.target.value});
   const handleChangeTo = (e) => onChange({...rule, to: e.target.value});
   return (
@@ -30,4 +30,4 @@ const Rule = ({rule, onChange}) => {
   );
 };
 
-export default Rule;
+export default RuleInput;
