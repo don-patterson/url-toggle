@@ -1,5 +1,5 @@
 /* global chrome */
-import {loadFromStorage, syncUrlListener, migrateRules} from "./chrome";
+import {loadFromStorage, syncUrlListener} from "./chrome";
 import {findRule, applyRule} from "./util";
 
 chrome.pageAction.onClicked.addListener(async (tab) => {
@@ -13,8 +13,4 @@ chrome.pageAction.onClicked.addListener(async (tab) => {
 
 chrome.storage.onChanged.addListener(() => {
   syncUrlListener();
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-  migrateRules();
 });

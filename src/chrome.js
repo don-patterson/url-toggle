@@ -1,7 +1,5 @@
 /* global chrome */
 
-import {randomString} from "./util";
-
 const VERSION = "1.2";
 
 const loadFromStorage = () =>
@@ -40,22 +38,4 @@ const syncUrlListener = async () => {
   });
 };
 
-const migrateRules = async () => {
-  const {rules, version} = await loadFromStorage();
-  const migrated = {version: VERSION};
-
-  if (!version) {
-    // v1 rules were [pattern, replacement] pairs
-    migrated.rules = rules.map(([pattern, replacement]) => {
-      return {
-        id: randomString(),
-        from: pattern,
-        to: replacement,
-      };
-    });
-  }
-
-  saveToStorage(migrated);
-};
-
-export {loadFromStorage, migrateRules, saveToStorage, syncUrlListener, VERSION};
+export {loadFromStorage, saveToStorage, syncUrlListener, VERSION};
