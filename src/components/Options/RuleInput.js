@@ -1,11 +1,11 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {Grid, TextField} from "@material-ui/core";
 
 const RuleInput = ({rule, onChange}) => {
   const handleChangeFrom = (e) => onChange({...rule, from: e.target.value});
   const handleChangeTo = (e) => onChange({...rule, to: e.target.value});
   return (
-    <Fragment>
+    <>
       <Grid item xs={6}>
         <TextField
           fullWidth
@@ -26,7 +26,7 @@ const RuleInput = ({rule, onChange}) => {
           onChange={handleChangeTo}
         />
       </Grid>
-    </Fragment>
+    </>
   );
 };
 

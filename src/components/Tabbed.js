@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from "react";
+import React, {useState} from "react";
 import {Paper, Tab, Tabs, makeStyles, AppBar} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +14,7 @@ const Tabbed = ({children, ...tabProps}) => {
   const items = React.Children.toArray(children);
 
   return (
-    <Fragment>
+    <>
       <AppBar position="static">
         <Tabs value={selectedTab} onChange={handleSelectTab} {...tabProps}>
           {items.map(({props}) => (
@@ -25,7 +25,7 @@ const Tabbed = ({children, ...tabProps}) => {
       <Paper square className={classes.content}>
         {items[selectedTab]}
       </Paper>
-    </Fragment>
+    </>
   );
 };
 

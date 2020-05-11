@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useState} from "react";
 import {Button, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {saveToStorage} from "../../chrome";
@@ -52,49 +52,47 @@ const RuleList = ({rules, setRules}) => {
   };
 
   return (
-    <Fragment>
-      <Grid container spacing={2}>
-        <Grid item xs={12} container justify="flex-end">
-          <input
-            accept=".tsv"
-            className={classes.hidden}
-            id="import-button"
-            type="file"
-            onChange={handleImport}
-          />
-          <label htmlFor="import-button">
-            <Button variant="outlined" component="span">
-              Import
-            </Button>
-          </label>
-          <Button variant="outlined" disabled>
-            Export
+    <Grid container spacing={2}>
+      <Grid item xs={12} container justify="flex-end">
+        <input
+          accept=".tsv"
+          className={classes.hidden}
+          id="import-button"
+          type="file"
+          onChange={handleImport}
+        />
+        <label htmlFor="import-button">
+          <Button variant="outlined" component="span">
+            Import
           </Button>
-        </Grid>
-        {rules.map((rule, index) => (
-          <RuleInput
-            key={rule.id}
-            rule={rule}
-            onChange={partial(handleRuleChange, index)}
-          />
-        ))}
-        <Grid item xs={6} container justify="flex-end">
-          <Button variant="contained" onClick={handleAddRow}>
-            +Add
-          </Button>
-        </Grid>
-        <Grid item xs={6}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSave}
-            disabled={!saveEnabled}
-          >
-            Save
-          </Button>
-        </Grid>
+        </label>
+        <Button variant="outlined" disabled>
+          Export
+        </Button>
       </Grid>
-    </Fragment>
+      {rules.map((rule, index) => (
+        <RuleInput
+          key={rule.id}
+          rule={rule}
+          onChange={partial(handleRuleChange, index)}
+        />
+      ))}
+      <Grid item xs={6} container justify="flex-end">
+        <Button variant="contained" onClick={handleAddRow}>
+          +Add
+        </Button>
+      </Grid>
+      <Grid item xs={6}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSave}
+          disabled={!saveEnabled}
+        >
+          Save
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 

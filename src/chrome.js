@@ -1,11 +1,9 @@
 /* global chrome */
 
-const VERSION = "1.2";
-
 const loadFromStorage = () =>
   new Promise((resolve) => {
-    chrome.storage.sync.get(["rules", "version"], ({rules = [], version}) => {
-      resolve({rules, version});
+    chrome.storage.sync.get(["rules"], ({rules = []}) => {
+      resolve({rules});
     });
   });
 
@@ -22,11 +20,7 @@ const _urlMatcher = (rule) =>
   });
 
 const syncUrlListener = async () => {
-  const {rules, version} = await loadFromStorage();
-  if (version !== VERSION) {
-    return;
-  }
-
+  const {rules} = await loadFromStorage();
   // enable the icon when the URL matches one of your patterns
   chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
     chrome.declarativeContent.onPageChanged.addRules([
@@ -38,4 +32,15 @@ const syncUrlListener = async () => {
   });
 };
 
-export {loadFromStorage, saveToStorage, syncUrlListener, VERSION};
+const getUrlListener = () => {
+  return new Promise((resolve) => {
+    chrome.declarativeContent.onPageChanged.getRules(
+      undefined,
+      ([listener]) => {
+        resolve(listener);
+      }
+    );
+  });
+};
+
+export {loadFromStorage, saveToStorage, syncUrlListener, getUrlListener};
