@@ -1,3 +1,10 @@
+# Archival Notice
+This repo is unmaintained and pretty niche. This idea worked ok for a very specific work environment
+that had related views of the same data, and shared URL portions. I'll leave the code up for reference
+in case you want to tinker with Chrome extensions, however that landscape keeps evolving and I don't
+have the time to maintain this. Feel free to fork and take over!
+
+
 # URL Toggle
 
 ## Description
